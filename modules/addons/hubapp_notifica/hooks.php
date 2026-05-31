@@ -54,6 +54,25 @@ add_hook('InvoicePaid', 1, function($vars) {
     ], "INV_PAID_" . $vars['invoiceid']);
 });
 
+add_hook('InvoiceUnpaid', 1, function($vars) {
+    $invoiceId = $vars['invoiceid'];
+    $inv = Capsule::table('tblinvoices')->where('id', $invoiceId)->first();
+    
+    // Evita erro caso a fatura não seja encontrada
+    if (!$inv) return;
+    
+    $cli = Capsule::table('tblclients')->where('id', $inv->userid)->first();
+    $systemUrl = Capsule::table('tblconfiguration')->where('setting', 'SystemURL')->value('value');
+    
+    hubapp_dispatch('InvoiceUnpaid', $cli->id, [
+        '{firstname}' => $cli->firstname,
+        '{invoiceid}' => $invoiceId,
+        '{total}' => formatCurrency($inv->total), // Opcional, formata a moeda nativamente se precisar
+        '{duedate}' => fromMySQLDate($inv->duedate),
+        '{invoice_url}' => $systemUrl . "viewinvoice.php?id=" . $invoiceId
+    ], "INV_UNPAID_" . $invoiceId);
+});
+
 add_hook('InvoicePaymentReminder', 1, function($vars) {
     $inv = Capsule::table('tblinvoices')->where('id', $vars['invoiceid'])->first();
     $cli = Capsule::table('tblclients')->where('id', $inv->userid)->first();

@@ -51,6 +51,7 @@ function hubapp_notifica_output($vars) {
     
     $templates = [
         'InvoiceCreated' => ['name' => 'Fatura Gerada', 'default' => 'Olá {firstname}, sua fatura #{invoiceid} de R$ {total} foi gerada. Vencimento: {duedate}. Pague aqui: {invoice_url}'],
+        'InvoiceUnpaid' => ['name' => 'Fatura a Vencer', 'default' => '⏳ Olá {firstname}, lembramos que sua fatura #{invoiceid} vencerá no dia {duedate}. Acesse o link para pagamento: {invoice_url}'],
         'InvoicePaid' => ['name' => 'Pagamento Confirmado', 'default' => '✅ Obrigado {firstname}! Recebemos o pagamento da fatura #{invoiceid}. Seus serviços seguem ativos.'],
         'InvoicePaymentReminderFirst' => ['name' => '1º Aviso de Atraso', 'default' => '⚠️ Olá {firstname}, lembramos que a fatura #{invoiceid} venceu em {duedate}. Evite bloqueios: {invoice_url}'],
         'InvoicePaymentReminderSecond' => ['name' => '2º Aviso de Atraso', 'default' => '⚠️ Oi {firstname}, o pagamento da fatura #{invoiceid} ainda não consta em nosso sistema. Precisa de ajuda?'],
